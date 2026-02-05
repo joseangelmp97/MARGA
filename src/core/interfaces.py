@@ -12,7 +12,7 @@ class FrameSource(ABC):
     """Interface for frame source modules."""
 
     @abstractmethod
-    def get_frame_packet(self) -> FramePacket:
+    def get_frame_packet(self) -> Optional[FramePacket]:
         """Retrieves the next FramePacket from the source or None if no more frames are available."""
         pass
 
@@ -51,4 +51,7 @@ class Notifier(ABC):
     @abstractmethod
     def notify(self, packet: FramePacket,hazard_state: HazardState) -> None:
         """Sends a notification based on the provided hazard state."""
+        pass
+    @abstractmethod
+    def close(self) -> None:
         pass

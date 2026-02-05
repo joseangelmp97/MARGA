@@ -6,6 +6,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import IntEnum
 from typing import Optional, List, Tuple
+import time
 
 BBoxXYXY = Tuple[int, int, int, int]  # (x_min, y_min, x_max, y_max) in pixels
 
@@ -32,7 +33,6 @@ class FrameInfo:
     width: int  # Width of the frame in pixels
     height: int  # Height of the frame in pixels
     timestamp: float  # Timestamp of the frame in seconds
-    detections: List[Detection]  # List of detections in the frame
 
 @dataclass(frozen=True)
 class HazardState:
@@ -49,13 +49,14 @@ class FramePacket:
 
     frame: object  # The actual frame data
     frame_info: FrameInfo  # Metadata about the frame
-    hazard_state: HazardState  # Hazard state associated with the frame
 
     @staticmethod
     def from_frame(frame: object) -> FramePacket:
-        """Creates a FramePacket from a given frame with default metadata and hazard state.
+        """Factory method to create a FramePacket from raw frame data. The actual type of 'frame' can be defined by the implementation (e.g., numpy array, PIL image, etc.).
         """
-        default_frame_info = FrameInfo(width=0, height=0, timestamp=0.0, detections=[])
-        default_hazard_state = HazardState(hazard=False, severity=Severity.NONE)
-        return FramePacket(frame=frame, frame_info=default_frame_info, hazard_state=default_hazard_state)
+        h, w = frame.shape[:2]
+        return FramePacket(
+            frame=frame,
+            info=FrameInfo(width=w, height=h, timestamp=time.time()),
+        )
 
