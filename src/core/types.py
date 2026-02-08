@@ -15,7 +15,8 @@ class Detection:
     """Represents a detected object in a frame."""
 
     bbox: BBoxXYXY  # Bounding box of the detected object
-    class_id: int  # Class ID of the detected object
+    label : str  # Class label of the detected object (e.g., "person", "car")
+    class_id: Optional[int] = None  # Class ID of the detected object
     confidence: float  # Confidence score of the detection
     tracking_id: Optional[int] = None  # Optional tracking ID for the detected object
 
@@ -40,7 +41,7 @@ class HazardState:
 
     hazard: bool  # Whether a hazard is detected
     severity: Severity  # Severity level of the hazard
-    description: Optional[str] = None  # Optional description of the hazard
+    message: Optional[str] = None  # Optional description of the hazard
     affected_detections: Optional[List[Detection]] = None  # Detections related to the hazard
 
 @dataclass(frozen=True)
