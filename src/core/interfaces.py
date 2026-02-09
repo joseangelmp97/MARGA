@@ -30,6 +30,22 @@ class Detector(ABC):
         """Detects objects in a given frame packet."""
         pass
 
+class DepthEstimator(ABC):
+
+    """
+    Module to estimate depth in the ROI. This can be used by hazard logic to improve decision making. If not implemented, depth_roi in FrameInfo will be None.
+    """
+
+    @abstractmethod
+    def estimate_roi_depth(self, packet: FramePacket) -> float | None:
+        """Returns a single depth score for ROI (relative)."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def close(self) -> None:
+        raise NotImplementedError
+
+
 class HazardLogic(ABC):
     """
     Converts detections + frame info into hazard states.

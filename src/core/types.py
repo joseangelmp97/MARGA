@@ -15,9 +15,9 @@ class Detection:
     """Represents a detected object in a frame."""
 
     bbox: BBoxXYXY  # Bounding box of the detected object
-    label : str  # Class label of the detected object (e.g., "person", "car")
-    class_id: Optional[int] = None  # Class ID of the detected object
+    label: str  # Class label of the detected object (e.g., "person", "car")
     confidence: float  # Confidence score of the detection
+    class_id: Optional[int] = None  # Class ID of the detected object
     tracking_id: Optional[int] = None  # Optional tracking ID for the detected object
 
 class Severity(IntEnum):
@@ -34,6 +34,7 @@ class FrameInfo:
     width: int  # Width of the frame in pixels
     height: int  # Height of the frame in pixels
     timestamp: float  # Timestamp of the frame in seconds
+    depth_roi: Optional[float] = None  # Depth score in ROI (relative or metric later)
 
 @dataclass(frozen=True)
 class HazardState:
@@ -53,11 +54,10 @@ class FramePacket:
 
     @staticmethod
     def from_frame(frame: object) -> FramePacket:
-        """Factory method to create a FramePacket from raw frame data. The actual type of 'frame' can be defined by the implementation (e.g., numpy array, PIL image, etc.).
-        """
+        """Factory method to create a FramePacket from raw frame data. The actual type of 'frame' can be defined by the implementation (e.g., numpy array, PIL image, etc.)."""
         h, w = frame.shape[:2]
         return FramePacket(
             frame=frame,
-            info=FrameInfo(width=w, height=h, timestamp=time.time()),
+            frame_info=FrameInfo(width=w, height=h, timestamp=time.time()),
         )
 

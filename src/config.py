@@ -53,6 +53,19 @@ class DetectorConfig:
     # Speed knobs
     process_every_n_frames: int = 2   # e.g. 1 for max accuracy, 2-3 for speed
 
+@dataclass(frozen=True)
+class DepthConfig:
+
+    """
+    Defines which depth estimation model to use and its main parameters."""
+    enabled: bool = True
+    model_type: str = "depth_anything_v2"
+    repo_dir: str = "models/Depth-Anything-V2"
+    device: str = "cpu"         # "cpu" | "cuda"
+    input_size: int = 518       # typical value; we can tune for speed
+    roi_percentile: float = 5.0 # percentil in ROI for "nearest"
+
+
 # Decision / Hazard logic configuration.
 @dataclass(frozen=True)
 class HazardConfig:
@@ -117,6 +130,7 @@ class AppConfig:
     """
     capture: CaptureConfig = CaptureConfig()
     detector: DetectorConfig = DetectorConfig()
+    depth: DepthConfig = DepthConfig()
     hazard: HazardConfig = HazardConfig()
     feedback: FeedbackConfig = FeedbackConfig()
 
