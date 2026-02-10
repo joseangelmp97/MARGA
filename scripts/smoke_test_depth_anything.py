@@ -4,7 +4,7 @@ import cv2
 from src.core.types import FramePacket
 from src.perception.depth_anything_v2 import DepthAnythingV2Config, DepthAnythingV2Estimator
 
-IMG_PATH = "./assets/test.jpg"  # pon aquí una imagen real
+IMG_PATH = "./assets/test1.jpg"  # pon aquí una imagen real
 
 
 def main():
@@ -22,6 +22,8 @@ def main():
     )
 
     est = DepthAnythingV2Estimator(cfg)
+    # Mostrar mapa de calor con ROI (bloqueante hasta que pulses una tecla)
+    est.visualize_depth(packet, block=True)
     score = est.estimate_roi_depth(packet)
     print("ROI depth score:", score)
     est.close()
